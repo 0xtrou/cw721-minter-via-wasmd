@@ -77,11 +77,7 @@ const WalletProvider: FC<{
 export default WalletProvider;
 
 export const useEvmSigner = () => {
-  const context = useContext(EvmWalletContext);
-  if (!context) {
-    throw new Error('Must be in provider');
-  }
-  return context;
+  return useContext(EvmWalletContext);
 };
 
 export const getReadonlyEthersProvider = (chain: Chain) => {

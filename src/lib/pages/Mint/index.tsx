@@ -20,7 +20,7 @@ import { findChainRegistry } from '~/lib/registry/chains';
 
 const Mint = () => {
   const { isConnected, chain } = useAccount();
-  const { signer } = useEvmSigner();
+  const signerContext = useEvmSigner();
 
   const form = useFormik({
     initialValues: {
@@ -29,7 +29,7 @@ const Mint = () => {
     },
     onSubmit: async (values) => {
       const mintProvider = new MintProvider(
-        signer as JsonRpcSigner,
+        signerContext?.signer as JsonRpcSigner,
         findChainRegistry(chain?.id || 0) as ChainConfig
       );
 
