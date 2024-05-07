@@ -11,14 +11,14 @@ import type {
   ContractRunner,
   ContractMethod,
   Listener,
-} from "ethers";
+} from 'ethers';
 import type {
   TypedContractEvent,
   TypedDeferredTopicFilter,
   TypedEventLog,
   TypedListener,
   TypedContractMethod,
-} from "./common";
+} from './common';
 
 export declare namespace IWasmd {
   export type ExecuteMsgStruct = {
@@ -30,42 +30,42 @@ export declare namespace IWasmd {
   export type ExecuteMsgStructOutput = [
     contractAddress: string,
     msg: string,
-    coins: string
+    coins: string,
   ] & { contractAddress: string; msg: string; coins: string };
 }
 
 export interface WasmdInterface extends Interface {
   getFunction(
-    nameOrSignature: "execute" | "execute_batch" | "instantiate" | "query"
+    nameOrSignature: 'execute' | 'execute_batch' | 'instantiate' | 'query'
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "execute",
+    functionFragment: 'execute',
     values: [string, BytesLike, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "execute_batch",
+    functionFragment: 'execute_batch',
     values: [IWasmd.ExecuteMsgStruct[]]
   ): string;
   encodeFunctionData(
-    functionFragment: "instantiate",
+    functionFragment: 'instantiate',
     values: [BigNumberish, string, BytesLike, string, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "query",
+    functionFragment: 'query',
     values: [string, BytesLike]
   ): string;
 
-  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'execute', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "execute_batch",
+    functionFragment: 'execute_batch',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "instantiate",
+    functionFragment: 'instantiate',
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "query", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'query', data: BytesLike): Result;
 }
 
 export interface Wasmd extends BaseContract {
@@ -114,13 +114,13 @@ export interface Wasmd extends BaseContract {
   execute: TypedContractMethod<
     [contractAddress: string, msg: BytesLike, coins: BytesLike],
     [string],
-    "payable"
+    'payable'
   >;
 
   execute_batch: TypedContractMethod<
     [executeMsgs: IWasmd.ExecuteMsgStruct[]],
     [string[]],
-    "payable"
+    'payable'
   >;
 
   instantiate: TypedContractMethod<
@@ -129,16 +129,16 @@ export interface Wasmd extends BaseContract {
       admin: string,
       msg: BytesLike,
       label: string,
-      coins: BytesLike
+      coins: BytesLike,
     ],
     [[string, string] & { contractAddr: string; data: string }],
-    "payable"
+    'payable'
   >;
 
   query: TypedContractMethod<
     [contractAddress: string, req: BytesLike],
     [string],
-    "view"
+    'view'
   >;
 
   getFunction<T extends ContractMethod = ContractMethod>(
@@ -146,38 +146,38 @@ export interface Wasmd extends BaseContract {
   ): T;
 
   getFunction(
-    nameOrSignature: "execute"
+    nameOrSignature: 'execute'
   ): TypedContractMethod<
     [contractAddress: string, msg: BytesLike, coins: BytesLike],
     [string],
-    "payable"
+    'payable'
   >;
   getFunction(
-    nameOrSignature: "execute_batch"
+    nameOrSignature: 'execute_batch'
   ): TypedContractMethod<
     [executeMsgs: IWasmd.ExecuteMsgStruct[]],
     [string[]],
-    "payable"
+    'payable'
   >;
   getFunction(
-    nameOrSignature: "instantiate"
+    nameOrSignature: 'instantiate'
   ): TypedContractMethod<
     [
       codeID: BigNumberish,
       admin: string,
       msg: BytesLike,
       label: string,
-      coins: BytesLike
+      coins: BytesLike,
     ],
     [[string, string] & { contractAddr: string; data: string }],
-    "payable"
+    'payable'
   >;
   getFunction(
-    nameOrSignature: "query"
+    nameOrSignature: 'query'
   ): TypedContractMethod<
     [contractAddress: string, req: BytesLike],
     [string],
-    "view"
+    'view'
   >;
 
   filters: {};

@@ -3,5 +3,9 @@
     "sznm/react",
     "plugin:react/jsx-runtime",
     "plugin:@next/next/recommended"
-  ]
+  ],
+    "rules": {
+        "no-console": "warn",
+      "@typescript-eslint/no-explicit-any": "warn"
+    }
 }

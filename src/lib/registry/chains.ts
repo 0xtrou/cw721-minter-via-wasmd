@@ -1,18 +1,18 @@
-import { Chain } from "wagmi/chains";
+import type { Chain } from 'wagmi/chains';
 
 export interface ChainConfig {
-  key:               string;
-  blockTimeSec:      number;
-  confirmations:     number;
-  wagmiKey:          string;
-  chainName:         string;
-  rpcUrl:            string;
-  publicRpcUrl:      string;
-  nativeRpcUrl:      string;
-  chainId:           number;
-  explorerUrl:       string;
+  key: string;
+  blockTimeSec: number;
+  confirmations: number;
+  wagmiKey: string;
+  chainName: string;
+  rpcUrl: string;
+  publicRpcUrl: string;
+  nativeRpcUrl: string;
+  chainId: number;
+  explorerUrl: string;
   contractAddresses: ContractAddresses;
-  nativeToken:       NativeToken;
+  nativeToken: NativeToken;
 }
 
 export interface ContractAddresses {
@@ -20,17 +20,17 @@ export interface ContractAddresses {
 }
 
 export interface NativeToken {
-  chainKey:            string;
-  coingeckoId:         string;
-  name:                string;
-  symbol:              string;
-  logo:                string;
-  contractAddress:     string;
-  decimals:            number;
-  isGasToken:          boolean;
-  recommended:         boolean;
+  chainKey: string;
+  coingeckoId: string;
+  name: string;
+  symbol: string;
+  logo: string;
+  contractAddress: string;
+  decimals: number;
+  isGasToken: boolean;
+  recommended: boolean;
   wrappedTokenAddress: string;
-  wrappedTokenSymbol:  string;
+  wrappedTokenSymbol: string;
 }
 
 /**
@@ -42,29 +42,29 @@ export const ARCTIC_1 = {
   key: 'arctic-1',
   blockTimeSec: 0.3,
   confirmations: 3,
-  wagmiKey: "sei-arctic-1",
-  chainName: "Sei Public Devnet",
-  rpcUrl: "https://evm-rpc-arctic-1.sei-apis.com",
-  publicRpcUrl: "https://evm-rpc-arctic-1.sei-apis.com",
-  nativeRpcUrl: "https://rpc-arctic-1.sei-apis.com",
+  wagmiKey: 'sei-arctic-1',
+  chainName: 'Sei Public Devnet',
+  rpcUrl: 'https://evm-rpc-arctic-1.sei-apis.com',
+  publicRpcUrl: 'https://evm-rpc-arctic-1.sei-apis.com',
+  nativeRpcUrl: 'https://rpc-arctic-1.sei-apis.com',
   chainId: 713715,
-  explorerUrl: "https://seitrace.com/",
+  explorerUrl: 'https://seitrace.com/',
   contractAddresses: {
-    Wasmd: '0x0000000000000000000000000000000000001002'
+    Wasmd: '0x0000000000000000000000000000000000001002',
   },
   nativeToken: {
     chainKey: 'arctic-1',
-    coingeckoId: "sei-network",
-    name: "Sei",
-    symbol: "SEI",
-    logo: "https://assets.coingecko.com/coins/images/28205/standard/Sei_Logo_-_Transparent.png?1696527207",
-    contractAddress: "0x0000000000000000000000000000000000000000",
+    coingeckoId: 'sei-network',
+    name: 'Sei',
+    symbol: 'SEI',
+    logo: 'https://assets.coingecko.com/coins/images/28205/standard/Sei_Logo_-_Transparent.png?1696527207',
+    contractAddress: '0x0000000000000000000000000000000000000000',
     decimals: 18,
     isGasToken: true,
     recommended: true,
-    wrappedTokenAddress: "0x26841a0A5D958B128209F4ea9a1DD7E61558c330",
-    wrappedTokenSymbol: "WETH",
-  }
+    wrappedTokenAddress: '0x26841a0A5D958B128209F4ea9a1DD7E61558c330',
+    wrappedTokenSymbol: 'WETH',
+  },
 } as ChainConfig;
 
 /**
@@ -77,7 +77,7 @@ export const ARCTIC_1 = {
 export const DEFAULT_CHAINS = [ARCTIC_1];
 
 export const findChainRegistry = (chainId: number | string) => {
-  if (typeof chainId === "string") {
+  if (typeof chainId === 'string') {
     return DEFAULT_CHAINS.find((chain) => chain.key === chainId) || null;
   }
 
@@ -110,4 +110,6 @@ DEFAULT_CHAINS.map((chainRegistry) => {
     },
     testnet: false,
   } as Chain;
+
+  return null;
 });

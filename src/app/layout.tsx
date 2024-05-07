@@ -1,9 +1,9 @@
 import '@rainbow-me/rainbowkit/styles.css';
 import type { Metadata, Viewport } from 'next';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
-import ChakraProvider from '~/lib/providers/Chakra.provider';
 import Layout from '~/lib/layout';
+import ChakraProvider from '~/lib/providers/Chakra.provider';
 import WalletProvider from '~/lib/providers/Wallet.provider';
 
 type RootLayoutProps = {

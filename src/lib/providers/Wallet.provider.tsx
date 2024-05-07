@@ -1,22 +1,15 @@
-"use client";
+'use client';
 
-import {
-  getDefaultConfig,
-  RainbowKitProvider,
-} from '@rainbow-me/rainbowkit';
-import { WagmiProvider } from 'wagmi';
-import {
-  QueryClientProvider,
-  QueryClient,
-} from '@tanstack/react-query';
-import { FC, ReactNode } from 'react';
-import { WalletClient } from 'viem';
-import { createContext, useContext, useMemo } from "react";
-import { useWalletClient, useAccount } from "wagmi";
+import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { BrowserProvider, JsonRpcProvider, JsonRpcSigner } from 'ethers';
+import type { FC, ReactNode } from 'react';
+import { createContext, useContext, useMemo } from 'react';
+import type { WalletClient } from 'viem';
+import { WagmiProvider, useWalletClient, useAccount } from 'wagmi';
+import type { Chain } from 'wagmi/chains';
 
 import { WAGMI_CONFIG } from '~/lib/registry/chains';
-import { Chain } from 'wagmi/chains';
 
 export const config = getDefaultConfig({
   appName: 'CW721 Base Minter',
@@ -28,7 +21,8 @@ const queryClient = new QueryClient();
 
 const walletClientToSigner = (client: WalletClient) => {
   const { account, chain, transport } = client;
-  if(!account || !chain || !transport) throw new Error("Invalid wallet client");
+  if (!account || !chain || !transport)
+    throw new Error('Invalid wallet client');
   const provider = new BrowserProvider(transport as any, {
     chainId: chain.id,
     name: chain.name,
@@ -48,6 +42,7 @@ export const EvmSignerProvider: FC<{ children: ReactNode }> = (props) => {
   const { isConnected } = useAccount();
   const client = useWalletClient();
 
+  const { children } = props;
   /**
    * @dev Expose signer to context.
    * @property {JsonRpcSigner} signer The signer to use.
@@ -55,12 +50,12 @@ export const EvmSignerProvider: FC<{ children: ReactNode }> = (props) => {
    */
   const signer = useMemo(() => {
     if (!isConnected) return null;
-    return client?.data ? walletClientToSigner(client.data) : null;
+    return { signer: client?.data ? walletClientToSigner(client.data) : null };
   }, [client, isConnected]);
 
   return (
-    <EvmWalletContext.Provider value={{ signer }}>
-      {props.children}
+    <EvmWalletContext.Provider value={signer}>
+      {children}
     </EvmWalletContext.Provider>
   );
 };
@@ -68,14 +63,11 @@ export const EvmSignerProvider: FC<{ children: ReactNode }> = (props) => {
 const WalletProvider: FC<{
   children: ReactNode;
 }> = ({ children }) => {
-
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
-          <EvmSignerProvider>
-            {children}
-          </EvmSignerProvider>
+          <EvmSignerProvider>{children}</EvmSignerProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
@@ -87,15 +79,15 @@ export default WalletProvider;
 export const useEvmSigner = () => {
   const context = useContext(EvmWalletContext);
   if (!context) {
-    throw new Error("Must be in provider");
+    throw new Error('Must be in provider');
   }
   return context;
 };
 
 export const getReadonlyEthersProvider = (chain: Chain) => {
-  if(chain.rpcUrls[0].http.length >= 1) {
+  if (chain.rpcUrls[0].http.length >= 1) {
     return new JsonRpcProvider(chain.rpcUrls[0].http[0]);
   }
 
-  throw new Error("Invalid chain");
-}
+  throw new Error('Invalid chain');
+};

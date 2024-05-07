@@ -2,142 +2,142 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Interface, type ContractRunner } from "ethers";
-import type { Wasmd, WasmdInterface } from "../Wasmd";
+import { Contract, Interface, type ContractRunner } from 'ethers';
+import type { Wasmd, WasmdInterface } from '../Wasmd';
 
 const _abi = [
   {
     inputs: [
       {
-        internalType: "string",
-        name: "contractAddress",
-        type: "string",
+        internalType: 'string',
+        name: 'contractAddress',
+        type: 'string',
       },
       {
-        internalType: "bytes",
-        name: "msg",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'msg',
+        type: 'bytes',
       },
       {
-        internalType: "bytes",
-        name: "coins",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'coins',
+        type: 'bytes',
       },
     ],
-    name: "execute",
+    name: 'execute',
     outputs: [
       {
-        internalType: "bytes",
-        name: "response",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'response',
+        type: 'bytes',
       },
     ],
-    stateMutability: "payable",
-    type: "function",
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
     inputs: [
       {
         components: [
           {
-            internalType: "string",
-            name: "contractAddress",
-            type: "string",
+            internalType: 'string',
+            name: 'contractAddress',
+            type: 'string',
           },
           {
-            internalType: "bytes",
-            name: "msg",
-            type: "bytes",
+            internalType: 'bytes',
+            name: 'msg',
+            type: 'bytes',
           },
           {
-            internalType: "bytes",
-            name: "coins",
-            type: "bytes",
+            internalType: 'bytes',
+            name: 'coins',
+            type: 'bytes',
           },
         ],
-        internalType: "struct IWasmd.ExecuteMsg[]",
-        name: "executeMsgs",
-        type: "tuple[]",
+        internalType: 'struct IWasmd.ExecuteMsg[]',
+        name: 'executeMsgs',
+        type: 'tuple[]',
       },
     ],
-    name: "execute_batch",
+    name: 'execute_batch',
     outputs: [
       {
-        internalType: "bytes[]",
-        name: "responses",
-        type: "bytes[]",
+        internalType: 'bytes[]',
+        name: 'responses',
+        type: 'bytes[]',
       },
     ],
-    stateMutability: "payable",
-    type: "function",
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "uint64",
-        name: "codeID",
-        type: "uint64",
+        internalType: 'uint64',
+        name: 'codeID',
+        type: 'uint64',
       },
       {
-        internalType: "string",
-        name: "admin",
-        type: "string",
+        internalType: 'string',
+        name: 'admin',
+        type: 'string',
       },
       {
-        internalType: "bytes",
-        name: "msg",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'msg',
+        type: 'bytes',
       },
       {
-        internalType: "string",
-        name: "label",
-        type: "string",
+        internalType: 'string',
+        name: 'label',
+        type: 'string',
       },
       {
-        internalType: "bytes",
-        name: "coins",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'coins',
+        type: 'bytes',
       },
     ],
-    name: "instantiate",
+    name: 'instantiate',
     outputs: [
       {
-        internalType: "string",
-        name: "contractAddr",
-        type: "string",
+        internalType: 'string',
+        name: 'contractAddr',
+        type: 'string',
       },
       {
-        internalType: "bytes",
-        name: "data",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
       },
     ],
-    stateMutability: "payable",
-    type: "function",
+    stateMutability: 'payable',
+    type: 'function',
   },
   {
     inputs: [
       {
-        internalType: "string",
-        name: "contractAddress",
-        type: "string",
+        internalType: 'string',
+        name: 'contractAddress',
+        type: 'string',
       },
       {
-        internalType: "bytes",
-        name: "req",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'req',
+        type: 'bytes',
       },
     ],
-    name: "query",
+    name: 'query',
     outputs: [
       {
-        internalType: "bytes",
-        name: "response",
-        type: "bytes",
+        internalType: 'bytes',
+        name: 'response',
+        type: 'bytes',
       },
     ],
-    stateMutability: "view",
-    type: "function",
+    stateMutability: 'view',
+    type: 'function',
   },
 ] as const;
 

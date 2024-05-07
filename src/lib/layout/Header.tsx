@@ -13,7 +13,7 @@ const Header = () => {
         </Box>
       </Box>
       <Box marginLeft="auto">
-        <ConnectButton accountStatus={'address'} />
+        <ConnectButton accountStatus="address" />
       </Box>
     </Flex>
   );
