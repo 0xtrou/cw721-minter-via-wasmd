@@ -8,37 +8,88 @@ import {
   FormLabel,
   Input,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import type { JsonRpcSigner } from 'ethers';
 import { useFormik } from 'formik';
+import { useCallback } from 'react';
 import { useAccount } from 'wagmi';
 
-import { MintProvider } from '~/lib/providers/Mint.provider';
 import { useEvmSigner } from '~/lib/providers/Wallet.provider';
+import { WasmdProvider } from '~/lib/providers/Wasmd.provider';
 import type { ChainConfig } from '~/lib/registry/chains';
 import { findChainRegistry } from '~/lib/registry/chains';
 
 const Mint = () => {
   const { isConnected, chain } = useAccount();
   const signerContext = useEvmSigner();
+  const toast = useToast();
 
   const form = useFormik({
     initialValues: {
       nativeContractAddress: '',
+      recipient: '',
       tokenId: '0',
+      mint: false,
     },
     onSubmit: async (values) => {
-      const mintProvider = new MintProvider(
-        signerContext?.signer as JsonRpcSigner,
-        findChainRegistry(chain?.id || 0) as ChainConfig
-      );
+      toast({
+        position: 'top-right',
+        title: 'Sending transaction',
+        description: 'Please confirm your transaction',
+        status: 'info',
+        duration: 9000,
+        isClosable: true,
+      });
+      try {
+        const wasmdProvider = new WasmdProvider(
+          signerContext?.signer as JsonRpcSigner,
+          findChainRegistry(chain?.id || 0) as ChainConfig
+        );
 
-      await mintProvider.handleEvmMint(
-        values.nativeContractAddress,
-        values.tokenId
-      );
+        const instruction = values.mint
+          ? WasmdProvider.getMintInstruction(
+              values.nativeContractAddress,
+              values.recipient,
+              values.tokenId
+            )
+          : WasmdProvider.getTransferInstruction(
+              values.nativeContractAddress,
+              values.recipient,
+              values.tokenId
+            );
+
+        await wasmdProvider.handleWasmd(instruction);
+
+        toast({
+          position: 'top-right',
+          title: 'Transaction success',
+          description: 'Transaction success',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
+      } catch (er) {
+        toast({
+          position: 'top-right',
+          title: 'Transaction failed',
+          description: 'Transaction failed',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
+      }
     },
   });
+
+  const getNativeSeiAddress = useCallback(async () => {
+    const mintProvider = new WasmdProvider(
+      signerContext?.signer as JsonRpcSigner,
+      findChainRegistry(chain?.id || 0) as ChainConfig
+    );
+    const addr = await mintProvider.getSeiAddress();
+    await form.setFieldValue('recipient', addr);
+  }, [form, signerContext?.signer, chain?.id]);
 
   if (!isConnected)
     return (
@@ -93,15 +144,93 @@ const Mint = () => {
         <FormErrorMessage>{form.errors.tokenId}</FormErrorMessage>
       </FormControl>
 
-      <Button
-        mt={4}
-        colorScheme="teal"
-        isLoading={form.isSubmitting}
-        onClick={form.submitForm}
-        type="submit"
+      <FormControl
+        isInvalid={!!form.errors.recipient && form.touched.recipient}
       >
-        Submit
-      </Button>
+        <FormLabel>
+          Recipient
+          <Button
+            isDisabled={form.isSubmitting}
+            onClick={getNativeSeiAddress}
+            ml={4}
+          >
+            Fetch your native sei address
+          </Button>
+        </FormLabel>
+        <Input
+          {...form.getFieldProps('recipient')}
+          disabled={form.isSubmitting}
+        />
+        <FormErrorMessage>{form.errors.recipient}</FormErrorMessage>
+      </FormControl>
+
+      <FormControl mt={4}>
+        <FormLabel>
+          <Text as="span">Toggle Mint/Transfer</Text>
+          <Button
+            ml={4}
+            isDisabled={form.isSubmitting}
+            colorScheme="purple"
+            onClick={() => form.setFieldValue('mint', !form.values.mint)}
+          >
+            {form.values.mint ? 'Mint' : 'Transfer'}
+          </Button>
+          <br />
+          <br />
+          <br />
+          <br />
+          <Text>
+            You will{' '}
+            <Text as="span" fontWeight="bold">
+              {form.values.mint ? 'mint' : 'transfer'}
+            </Text>{' '}
+            the nft{' '}
+            <Text as="span" fontWeight="bold">
+              {form.values.tokenId}
+            </Text>{' '}
+            to{' '}
+            <Text as="span" fontWeight="bold">
+              {form.values.recipient}
+            </Text>
+          </Text>
+        </FormLabel>
+      </FormControl>
+
+      <FormControl>
+        <Button
+          isDisabled={
+            !form.values.nativeContractAddress ||
+            !form.values.recipient ||
+            !form.values.tokenId
+          }
+          mt={4}
+          mr={4}
+          colorScheme="teal"
+          isLoading={form.isSubmitting}
+          onClick={form.submitForm}
+          type="submit"
+        >
+          Submit
+        </Button>
+
+        <Button
+          isDisabled={form.isSubmitting}
+          mt={4}
+          colorScheme="gray"
+          onClick={() =>
+            form.resetForm({
+              values: {
+                nativeContractAddress: '',
+                recipient: '',
+                tokenId: '0',
+                mint: false,
+              },
+            })
+          }
+        >
+          Clear form
+        </Button>
+      </FormControl>
     </Flex>
   );
 };
