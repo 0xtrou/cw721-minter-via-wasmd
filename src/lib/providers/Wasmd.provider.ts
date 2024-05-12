@@ -71,7 +71,7 @@ export class WasmdProvider {
 
   public async handleWasmd(instruction: {
     contractAddress: string;
-    msg: Record<string, string>;
+    msg: Record<string, Record<string, string>>;
   }): Promise<{
     txHash: string;
   } | null> {
