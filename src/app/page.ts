@@ -1,3 +1,5 @@
+'use client';
+
 import Home from 'lib/pages/Mint';
 
 export const dynamic = 'force-static';

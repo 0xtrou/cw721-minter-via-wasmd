@@ -31,6 +31,7 @@
     "@cosmjs/encoding": "^0.32.3",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@logto/react": "^3.0.14",
     "@rainbow-me/rainbowkit": "^2.0.7",
     "@sei-js/core": "^3.2.1",
     "@tanstack/react-query": "^5.35.1",
@@ -69,5 +70,6 @@
   "engines": {
     "node": ">=16.x.x",
     "pnpm": ">=8"
-  }
+  },
+  "packageManager": "pnpm@9.1.0+sha1.217063ce3fcbf44f3051666f38b810f1ddefee4a"
 }
