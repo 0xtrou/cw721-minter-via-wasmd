@@ -19,8 +19,14 @@ import { useEffect, useState } from 'react';
 import { LogtoRedirectURL } from '~/lib/registry/constant';
 
 const Header = () => {
-  const { signIn, signOut, isAuthenticated, getIdTokenClaims, fetchUserInfo } =
-    useLogto();
+  const {
+    signIn,
+    signOut,
+    isAuthenticated,
+    getIdTokenClaims,
+    fetchUserInfo,
+    getAccessToken,
+  } = useLogto();
   const [user, setUser] = useState<IdTokenClaims>();
 
   useEffect(() => {
@@ -28,9 +34,13 @@ const Header = () => {
       if (isAuthenticated) {
         const userData = await fetchUserInfo();
         setUser(userData);
+        const accessToken = await getAccessToken(
+          'https://workspace.app.seitrace.com/api'
+        );
+        console.log(accessToken);
       }
     })();
-  }, [getIdTokenClaims, isAuthenticated, fetchUserInfo]);
+  }, [getIdTokenClaims, isAuthenticated, fetchUserInfo, getAccessToken]);
 
   return (
     <Flex as="header" width="full" align="center">
