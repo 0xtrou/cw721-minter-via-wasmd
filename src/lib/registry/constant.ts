@@ -1,7 +1,7 @@
 import type { LogtoConfig } from '@logto/react';
 
 export const logtoConfig: LogtoConfig = {
-  endpoint: 'https://auth.seitrace.com/',
+  endpoint: 'https://workspace.seitrace.com/',
   appId: '5xronvmk2op0gyzo9njcs',
   resources: ['https://workspace.app.seitrace.com/api'],
 };
